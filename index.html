@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>miniproject</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script>
+        function showInfo(){
+            let humid = document.getElementById('input_humid').value;
+            let temp = document.getElementById('input_temp').value;
+            let soil = document.getElementById('input_soil').value;
+            document.getElementById('dttb').innerHTML = "<tr><td>ความชื้นดิน</td><td>${soil}</td></tr><tr><td>ความชื้นอากาศ</td><td>${humid}</td></tr><tr><td>อุณหภูมิอากาศ</td><td>${temp}</td></tr>";
+        }
+    </script>
+</head>
+<body>
+    <form class="hidden" onsubmit="showInfo()">
+    <input type="number" name="humid" id="input_humid">
+    <input type="number" name="temp" id="input_temp">
+    <input type="number" name="soil" id="input_soil">
+    <input type="submit" name="submit" id="input_submit" value="submit">
+    </form>
+    <table id="dttb">
+    </table>
+</body>
+</html>
