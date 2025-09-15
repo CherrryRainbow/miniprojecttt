@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>miniproject</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <form class="hidden">
+        {% csrf_token %}
+        <input type="number" name="humid" id="input_humid">
+        <input type="number" name="temp" id="input_temp">
+        <input type="number" name="soil" id="input_soil">
+        <input type="submit" name="submit" id="input_submit" value="submit">
+    </form>
+    <script>
+    </script>
+    <table style="font-size:28px;">
+        <tr><td class="text-bold"><h3 style="padding:10px;">ความชื้นดิน</h3></td><td><h3 style="padding:10px;">{{req.soil}}</h3></td></tr>
+        <tr><td class="text-bold"><h3 style="padding:10px;">ความชื้นอากาศ</h3></td><td><h3 style="padding:10px;">{{req.humid}}</h3></td></tr>
+        <tr><td class="text-bold"><h3 style="padding:10px;">อุณหภูมิอากาศ</h3></td><td><h3 style="padding:10px;">{{req.temp}}</h3></td></tr>
+    </table>
+</body>
+</html>
