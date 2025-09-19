@@ -17,9 +17,9 @@
       let res = await fetch("https://cherry-miniproject.onrender.com/latest");
       let data = await res.json();
       document.getElementById("sensors").innerHTML = `
-        🌡️ Temp: ${data.temperature} °C <br>
-        💧 Humidity: ${data.humidity}% <br>
-        🌱 Soil: ${data.soil}
+        🌡️ Temp: '${data.temperature}'<br>
+        💧 Humidity: '${data.humidity}' <br>
+        🌱 Soil: '${data.soil}'
       `;
     }
     async function setPump(state){
