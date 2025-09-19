@@ -1,50 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Mini Project Embedded System</title>
+  <meta charset="utf-8">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-6">
-  <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
-    <h1 class="text-2xl font-bold mb-4">🌱 Smart Plant Pot Monitor</h1>
-    
-    <div id="data" class="space-y-2 text-lg">
-      <p>🌡️ Temp: <span id="temp">--</span> °C</p>
-      <p>💧 Humidity: <span id="hum">--</span> %</p>
-      <p>🌍 Soil: <span id="soil">--</span></p>
-      <p>🚰 Pump: <span id="pump">--</span></p>
-    </div>
-
-    <div class="mt-4 space-x-2">
-      <button onclick="setPump('on')" class="px-4 py-2 bg-green-500 text-white rounded">Pump ON</button>
-      <button onclick="setPump('off')" class="px-4 py-2 bg-red-500 text-white rounded">Pump OFF</button>
-    </div>
+<body class="p-6 bg-gray-100">
+  <div class="max-w-lg mx-auto bg-white shadow p-6 rounded">
+    <h1 class="text-2xl font-bold mb-4">Smart Farm Dashboard</h1>
+    <div id="sensors" class="mb-4"></div>
+    <button onclick="setPump('on')" class="bg-green-500 text-white px-4 py-2 rounded">เปิดปั๊ม</button>
+    <button onclick="setPump('off')" class="bg-red-500 text-white px-4 py-2 rounded">ปิดปั๊ม</button>
   </div>
 
   <script>
-    const ESP_URL = "https://cherry-miniproject.onrender.com"; // IP ของ ESP32-C3
-
-    async function fetchData() {
-      try {
-        let res = await fetch(`${ESP_URL}/data`);
-        let data = await res.json();
-        document.getElementById("temp").innerText = data.temperature;
-        document.getElementById("hum").innerText = data.humidity;
-        document.getElementById("soil").innerText = data.soil;
-        document.getElementById("pump").innerText = data.pump == 1 ? "ON" : "OFF";
-      } catch (e) {
-        console.error(e);
-      }
+    async function loadData(){
+      let res = await fetch("/latest");
+      let data = await res.json();
+      document.getElementById("sensors").innerHTML = `
+        🌡️ Temp: ${data.temperature} °C <br>
+        💧 Humidity: ${data.humidity}% <br>
+        🌱 Soil: ${data.soil}
+      `;
     }
-
-    async function setPump(state) {
-      await fetch(`${ESP_URL}/pump?state=${state}`);
-      fetchData();
+    async function setPump(state){
+      await fetch("/pump", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({status: state})
+      });
     }
-
-    setInterval(fetchData, 2000);
-    fetchData();
+    setInterval(loadData, 2000);
+    loadData();
   </script>
 </body>
 </html>
