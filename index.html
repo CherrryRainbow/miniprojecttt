@@ -14,7 +14,7 @@
 
   <script>
     async function loadData(){
-      let res = await fetch("/latest");
+      let res = await fetch("https://cherry-miniproject.onrender.com/latest");
       let data = await res.json();
       document.getElementById("sensors").innerHTML = `
         🌡️ Temp: ${data.temperature} °C <br>
@@ -23,7 +23,7 @@
       `;
     }
     async function setPump(state){
-      await fetch("/pump", {
+      await fetch("https://cherry-miniproject.onrender.com/pump", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({status: state})
