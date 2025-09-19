@@ -1,29 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <!--meta http-equiv="refresh" content="5"-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>miniproject</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script>
-        function showInfo(){
-            let humid = document.getElementById('input_humid').value;
-            let temp = document.getElementById('input_temp').value;
-            let soil = document.getElementById('input_soil').value;
-            document.getElementById('dttb').innerHTML = "<tr><td>ความชื้นดิน</td><td>${soil}</td></tr><tr><td>ความชื้นอากาศ</td><td>${humid}</td></tr><tr><td>อุณหภูมิอากาศ</td><td>${temp}</td></tr>";
-        }
-        showInfo();
-    </script>
+  <meta charset="UTF-8">
+  <title>Mini Project Embedded System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <form onsubmit="showInfo()">
-    <input type="number" name="humid" id="input_humid">
-    <input type="number" name="temp" id="input_temp">
-    <input type="number" name="soil" id="input_soil">
-    <input type="submit" name="submit" id="input_submit" value="submit">
-    </form>
-    <table id="dttb">
-    </table>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
+    <h1 class="text-2xl font-bold mb-4">🌱 Smart Farm Monitor</h1>
+    
+    <div id="data" class="space-y-2 text-lg">
+      <p>🌡️ Temp: <span id="temp">--</span> °C</p>
+      <p>💧 Humidity: <span id="hum">--</span> %</p>
+      <p>🌍 Soil: <span id="soil">--</span></p>
+      <p>🚰 Pump: <span id="pump">--</span></p>
+    </div>
+
+    <div class="mt-4 space-x-2">
+      <button onclick="setPump('on')" class="px-4 py-2 bg-green-500 text-white rounded">Pump ON</button>
+      <button onclick="setPump('off')" class="px-4 py-2 bg-red-500 text-white rounded">Pump OFF</button>
+    </div>
+  </div>
+
+  <script>
+    const ESP_URL = "https://cherry-miniproject.onrender.com"; // IP ของ ESP32-C3
+
+    async function fetchData() {
+      try {
+        let res = await fetch(`${ESP_URL}/data`);
+        let data = await res.json();
+        document.getElementById("temp").innerText = data.temperature;
+        document.getElementById("hum").innerText = data.humidity;
+        document.getElementById("soil").innerText = data.soil;
+        document.getElementById("pump").innerText = data.pump == 1 ? "ON" : "OFF";
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function setPump(state) {
+      await fetch(`${ESP_URL}/pump?state=${state}`);
+      fetchData();
+    }
+
+    setInterval(fetchData, 2000);
+    fetchData();
+  </script>
 </body>
 </html>
