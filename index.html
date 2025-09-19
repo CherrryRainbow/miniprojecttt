@@ -16,10 +16,13 @@
     async function loadData(){
       let res = await fetch("https://cherry-miniproject.onrender.com/latest");
       let data = await res.json();
+      let mytemp = (data.temperature === null) ? "No Result :(" : data.temperature;
+      let myhumid = (data.humidity === null) ? "No Result :(" : data.humidity;
+      let mysoil = (data.soil === null) ? "No Result :(" : data.soil;
       document.getElementById("sensors").innerHTML = `
-        🌡️ Temp: '${data.temperature}'<br>
-        💧 Humidity: '${data.humidity}' <br>
-        🌱 Soil: '${data.soil}'
+        🌡️ Temp: ${mytemp}<br>
+        💧 Humidity: ${myhumid} <br>
+        🌱 Soil: ${mysoil}
       `;
     }
     async function setPump(state){
